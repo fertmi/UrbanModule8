@@ -1,8 +1,13 @@
 class Car:
+    serial_car = 1
     def __init__(self, model, vin, auto_number):
         self.model = model
         self.__vin = vin if self.__is_valid_vin(vin) else None
         self.__number = vin if self.__is_valid_numbers(auto_number) else None
+        self.serial_car += 1
+
+    def __str__(self):
+        return f'Модель: {self.model}, зарегистрирована под номером: {self.serial_car}'
 
     def __is_valid_vin(self, vin_number):
         if not isinstance(vin_number, int):
@@ -29,21 +34,25 @@ class IncorrectCarNumbers(Exception):
         self.message = message
 
 #Функция регистрация автомобиля
-def register_car(serial_number_car, model, vin, auto_number):
+def register_car(model, vin, auto_number):
     try:
-        serial_number_car = Car(model, vin, auto_number)
+        object_car = Car(model, vin, auto_number)
     except IncorrectVinNumber as exc:
         print(exc.message)
+        return f'{model} не зарегистрирована по причине: {exc.message}'
     except IncorrectCarNumbers as exc:
         print(exc.message)
+        return f'{model} не зарегистрирована по причине: {exc.message}'
     else:
-        print(f'{serial_number_car.model} успешно создан')
-
+        print(f'{object_car.model} успешно создан')
+    return object_car
 
 #Основная программа
-register_car('first','Model1', 1000000, 'f123dj')
-register_car('second','Model2', 300, 'т001тр')
-register_car('third','Model3', 2020202, 'нет номера')
-register_car('fourth','Model4', 7020202, 908301)
-register_car('fifth','Model5', '9000000', 'Т165ТХ')
-register_car('sixth','Model6', 9999999, 'Т251ТХ')
+first=register_car('Model1', 1000000, 'f123dj')
+second=register_car('Model2', 300, 'т001тр')
+third=register_car('Model3', 2020202, 'нет номера')
+fourth=register_car('Model4', 7020202, 908301)
+fifth=register_car('Model5', '9000000', 'Т165ТХ')
+sixth=register_car('Model6', 9999999, 'Т251ТХ')
+print(sixth)
+print(second)
